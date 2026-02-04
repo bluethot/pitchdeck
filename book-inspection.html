@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Site Inspection | PrimeProperties</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Flatpickr CSS for date picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #198754;
+            --accent-color: #ffc107;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+        }
+        
+        .booking-hero {
+            background: linear-gradient(rgba(13, 110, 253, 0.9), rgba(13, 110, 253, 0.95)), 
+                        url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .booking-steps {
+            position: relative;
+            padding: 50px 0;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: #e9ecef;
+            color: var(--dark-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active .step-number {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .step.completed .step-number {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        .step-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .step.active .step-label {
+            color: var(--primary-color);
+        }
+        
+        .step-line {
+            position: absolute;
+            top: 25px;
+            left: 50%;
+            right: 50%;
+            height: 2px;
+            background: #e9ecef;
+            z-index: 1;
+        }
+        
+        .booking-form-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .form-section {
+            display: none;
+        }
+        
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .property-select-card {
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+        }
+        
+        .property-select-card:hover {
+            border-color: var(--primary-color);
+            background: rgba(13, 110, 253, 0.05);
+        }
+        
+        .property-select-card.selected {
+            border-color: var(--primary-color);
+            background: rgba(13, 110, 253, 0.1);
+        }
+        
+        .property-radio {
+            display: none;
+        }
+        
+        .property-price {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .calendar-container {
+            background: var(--light-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .time-slot {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .time-slot:hover {
+            border-color: var(--primary-color);
+            background: rgba(13, 110, 253, 0.05);
+        }
+        
+        .time-slot.selected {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .time-slot.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #f8f9fa;
+        }
+        
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .booking-summary {
+            background: var(--light-color);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+        
+        .confirmation-icon {
+            font-size: 4rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        .whatsapp-confirm {
+            background: #25d366;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .whatsapp-confirm:hover {
+            background: #1da851;
+            transform: translateY(-2px);
+        }
+        
+        .booking-tips {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .mobile-sticky-booking {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 15px;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .booking-form-container {
+                padding: 25px;
+                margin-top: 0;
+            }
+            
+            .booking-hero {
+                padding: 70px 0;
+            }
+            
+            .step-label {
+                font-size: 0.8rem;
+            }
+            
+            .mobile-sticky-booking {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/2348123456789?text=Hi,%20I%20want%20to%20book%20a%20site%20inspection" class="whatsapp-float" target="_blank" style="position:fixed;width:60px;height:60px;bottom:20px;right:20px;background-color:#25d366;color:white;border-radius:50%;text-align:center;font-size:30px;box-shadow:2px 2px 10px rgba(0,0,0,0.2);z-index:1000;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html" style="font-weight:700;font-size:1.8rem;color:var(--primary-color)!important;">
+                <i class="bi bi-house-heart-fill text-primary me-2"></i>
+                PrimeProperties
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="properties.html">Properties</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="book-inspection.html">Book Inspection</a>
+                    </li>
+                </ul>
+                <div class="d-flex ms-lg-3 mt-3 mt-lg-0">
+                    <a href="tel:+2348123456789" class="btn btn-outline-primary me-2">
+                        <i class="bi bi-telephone"></i> Call Now
+                    </a>
+                    <a href="https://wa.me/2348123456789" class="btn btn-primary" target="_blank">
+                        <i class="bi bi-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="booking-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-5 fw-bold mb-3">Book a Site Inspection</h1>
+                    <p class="lead mb-4">See our properties in person. Book a convenient time for a guided tour with our expert agents.</p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <div class="bg-white text-primary px-3 py-2 rounded d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <span>Free Site Inspection</span>
+                        </div>
+                        <div class="bg-white text-primary px-3 py-2 rounded d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <span>Expert Guidance</span>
+                        </div>
+                        <div class="bg-white text-primary px-3 py-2 rounded d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            <span>No Obligation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Steps Indicator -->
+    <section class="booking-steps">
+        <div class="container">
+            <div class="step-indicator">
+                <div class="step active" id="step1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Select Property</div>
+                </div>
+                <div class="step-line" style="left: 25%; right: 25%;"></div>
+                <div class="step" id="step2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Choose Date & Time</div>
+                </div>
+                <div class="step-line" style="left: 50%; right: 50%;"></div>
+                <div class="step" id="step3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Your Details</div>
+                </div>
+                <div class="step-line" style="left: 75%; right: 25%;"></div>
+                <div class="step" id="step4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Confirmation</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Form -->
+    <section class="pb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="booking-form-container">
+                        <!-- Step 1: Select Property -->
+                        <div class="form-section active" id="section1">
+                            <h3 class="mb-4">Select Property for Inspection</h3>
+                            <p class="text-muted mb-4">Choose the property you'd like to visit. You can select multiple properties if they're in the same location.</p>
+                            
+                            <div class="row">
+                                <!-- Property 1 -->
+                                <div class="col-md-6">
+                                    <label class="property-select-card" for="property1">
+                                        <input type="radio" class="property-radio" name="property" id="property1" value="green-valley">
+                                        <div class="d-flex align-items-start">
+                                            <img src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                                                 alt="Green Valley Estate" 
+                                                 class="rounded me-3" 
+                                                 style="width: 80px; height: 80px; object-fit: cover;">
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-1">Green Valley Estate</h5>
+                                                <p class="text-muted small mb-1">
+                                                    <i class="bi bi-geo-alt"></i> Lekki Phase 1, Lagos
+                                                </p>
+                                                <p class="property-price mb-1">₦25,000,000</p>
+                                                <span class="badge bg-success">Available</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <!-- Property 2 -->
+                                <div class="col-md-6">
+                                    <label class="property-select-card" for="property2">
+                                        <input type="radio" class="property-radio" name="property" id="property2" value="sunrise-apartments">
+                                        <div class="d-flex align-items-start">
+                                            <img src="https://images.unsplash.com/photo-1518780664697-55e3ad937233?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                                                 alt="Sunrise Apartments" 
+                                                 class="rounded me-3" 
+                                                 style="width: 80px; height: 80px; object-fit: cover;">
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-1">Sunrise Apartments</h5>
+                                                <p class="text-muted small mb-1">
+                                                    <i class="bi bi-geo-alt"></i> Ikeja GRA, Lagos
+                                                </p>
+                                                <p class="property-price mb-1">₦85,000,000</p>
+                                                <span class="badge bg-success">Available</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <!-- Property 3 -->
+                                <div class="col-md-6">
+                                    <label class="property-select-card" for="property3">
+                                        <input type="radio" class="property-radio" name="property" id="property3" value="ocean-view">
+                                        <div class="d-flex align-items-start">
+                                            <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                                                 alt="Ocean View Towers" 
+                                                 class="rounded me-3" 
+                                                 style="width: 80px; height: 80px; object-fit: cover;">
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-1">Ocean View Towers</h5>
+                                                <p class="text-muted small mb-1">
+                                                    <i class="bi bi-geo-alt"></i> Victoria Island, Lagos
+                                                </p>
+                                                <p class="property-price mb-1">₦120,000,000</p>
+                                                <span class="badge bg-success">Available</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                
+                                <!-- Property 4 -->
+                                <div class="col-md-6">
+                                    <label class="property-select-card" for="property4">
+                                        <input type="radio" class="property-radio" name="property" id="property4" value="golden-palms">
+                                        <div class="d-flex align-items-start">
+                                            <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                                                 alt="Golden Palms" 
+                                                 class="rounded me-3" 
+                                                 style="width: 80px; height: 80px; object-fit: cover;">
+                                            <div class="flex-grow-1">
+                                                <h5 class="mb-1">Golden Palms</h5>
+                                                <p class="text-muted small mb-1">
+                                                    <i class="bi bi-geo-alt"></i> Ibadan, Oyo State
+                                                </p>
+                                                <p class="property-price mb-1">₦8,000,000</p>
+                                                <span class="badge bg-success">Available</span>
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-navigation">
+                                <div></div> <!-- Empty div for spacing -->
+                                <button class="btn btn-primary" onclick="nextStep()">
+                                    Next: Choose Date & Time <i class="bi bi-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 2: Choose Date & Time -->
+                        <div class="form-section" id="section2">
+                            <h3 class="mb-4">Select Date & Time</h3>
+                            <p class="text-muted mb-4">Choose a convenient date and time for your site inspection. Weekdays: 9AM - 5PM, Saturdays: 10AM - 4PM</p>
+                            
+                            <div class="calendar-container">
+                                <div class="mb-4">
+                                    <label for="inspectionDate" class="form-label fw-semibold">Select Date</label>
+                                    <input type="text" class="form-control" id="inspectionDate" placeholder="Choose a date" readonly>
+                                </div>
+                                
+                                <div>
+                                    <label class="form-label fw-semibold">Available Time Slots</label>
+                                    <div id="timeSlots">
+                                        <!-- Time slots will be populated by JavaScript -->
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <i class="bi bi-info-circle me-2"></i>
+                                <small>Please arrive 10 minutes before your scheduled time. Our agent will meet you at the property gate.</small>
+                            </div>
+                            
+                            <div class="form-navigation">
+                                <button class="btn btn-outline-secondary" onclick="prevStep()">
+                                    <i class="bi bi-arrow-left me-2"></i> Back
+                                </button>
+                                <button class="btn btn-primary" onclick="nextStep()">
+                                    Next: Your Details <i class="bi bi-arrow-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 3: Your Details -->
+                        <div class="form-section" id="section3">
+                            <h3 class="mb-4">Your Contact Details</h3>
+                            <p class="text-muted mb-4">Please provide your contact information so we can confirm your booking.</p>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="fullName" class="form-label">Full Name *</label>
+                                    <input type="text" class="form-control" id="fullName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-control" id="phone" placeholder="e.g., 08123456789" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email">
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="peopleCount" class="form-label">Number of People *</label>
+                                    <select class="form-select" id="peopleCount" required>
+                                        <option value="">Select...</option>
+                                        <option value="1">1 person</option>
+                                        <option value="2">2 people</option>
+                                        <option value="3">3 people</option>
+                                        <option value="4">4 people</option>
+                                        <option value="5+">5+ people</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="additionalNotes" class="form-label">Additional Notes (Optional)</label>
+                                    <textarea class="form-control" id="additionalNotes" rows="3" placeholder="Any special requirements or questions..."></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="booking-tips">
+                                <h6><i class="bi bi-lightbulb me-2"></i> Inspection Tips:</h6>
+                                <ul class="small mb-0">
+                                    <li>Wear comfortable shoes suitable for walking on uneven surfaces</li>
+                                    <li>Bring a notebook and pen to take notes</li>
+                                    <li>Have your identification ready</li>
+                                    <li>Plan to spend 45-60 minutes for the inspection</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="form-navigation">
+                                <button class="btn btn-outline-secondary" onclick="prevStep()">
+                                    <i class="bi bi-arrow-left me-2"></i> Back
+                                </button>
+                                <button class="btn btn-primary" onclick="nextStep()">
+                                    Review & Confirm <i class="bi bi-check-circle ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Step 4: Confirmation -->
+                        <div class="form-section" id="section4">
+                            <div class="text-center">
+                                <i class="bi bi-check-circle-fill confirmation-icon"></i>
+                                <h3 class="mb-3">Review Your Booking Details</h3>
+                                <p class="text-muted mb-4">Please review all details before confirming your site inspection.</p>
+                            </div>
+                            
+                            <div class="booking-summary">
+                                <h5 class="mb-4">Booking Summary</h5>
+                                
+                                <div class="summary-item">
+                                    <span class="text-muted">Property:</span>
+                                    <span class="fw-semibold" id="summaryProperty">--</span>
+                                </div>
+                                
+                                <div class="summary-item">
+                                    <span class="text-muted">Date:</span>
+                                    <span class="fw-semibold" id="summaryDate">--</span>
+                                </div>
+                                
+                                <div class="summary-item">
+                                    <span class="text-muted">Time:</span>
+                                    <span class="fw-semibold" id="summaryTime">--</span>
+                                </div>
+                                
+                                <div class="summary-item">
+                                    <span class="text-muted">Name:</span>
+                                    <span class="fw-semibold" id="summaryName">--</span>
+                                </div>
+                                
+                                <div class="summary-item">
+                                    <span class="text-muted">Phone:</span>
+                                    <span class="fw-semibold" id="summaryPhone">--</span>
+                                </div>
+                                
+                                <div class="summary-item">
+                                    <span class="text-muted">Number of People:</span>
+                                    <span class="fw-semibold" id="summaryPeople">--</span>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-warning">
+                                <i class="bi bi-exclamation-triangle me-2"></i>
+                                <small>By confirming, you agree to our <a href="#" class="alert-link">terms and conditions</a>. Cancellations must be made at least 24 hours in advance.</small>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button class="btn btn-success btn-lg whatsapp-confirm" onclick="confirmBooking()">
+                                    <i class="bi bi-whatsapp"></i> Confirm via WhatsApp
+                                </button>
+                                <p class="text-muted small mt-3">
+                                    <i class="bi bi-info-circle me-1"></i>
+                                    You'll receive a confirmation message within 30 minutes
+                                </p>
+                            </div>
+                            
+                            <div class="form-navigation">
+                                <button class="btn btn-outline-secondary" onclick="prevStep()">
+                                    <i class="bi bi-arrow-left me-2"></i> Edit Details
+                                </button>
+                                <button class="btn btn-primary" onclick="window.location.href='properties.html'">
+                                    Browse More Properties <i class="bi bi-house ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Contact Sidebar -->
+                    <div class="card border-0 shadow-sm mt-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-headset display-4 text-primary"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="card-title">Need Immediate Assistance?</h5>
+                                    <p class="card-text text-muted">Our customer service team is available to help you with your booking.</p>
+                                    <div class="d-flex gap-2">
+                                        <a href="tel:+2348123456789" class="btn btn-outline-primary flex-grow-1">
+                                            <i class="bi bi-telephone"></i> Call Now
+                                        </a>
+                                        <a href="https://wa.me/2348123456789" class="btn btn-success flex-grow-1" target="_blank">
+                                            <i class="bi bi-whatsapp"></i> WhatsApp
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mobile Sticky Booking CTA -->
+    <div class="mobile-sticky-booking d-lg-none">
+        <button class="btn btn-primary w-100" onclick="scrollToBooking()">
+            <i class="bi bi-calendar-check me-2"></i> Book Inspection Now
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer" style="background:var(--dark-color);color:white;padding:60px 0 30px;">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h4 class="mb-4">
+                        <i class="bi bi-house-heart-fill text-primary me-2"></i>
+                        PrimeProperties
+                    </h4>
+                    <p class="mb-4">Your trusted partner for prime real estate investments in Nigeria.</p>
+                    <div class="social-icons">
+                        <a href="#" style="display:inline-block;width:40px;height:40px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;line-height:40px;margin-right:10px;transition:all 0.3s;"><i class="bi bi-facebook"></i></a>
+                        <a href="#" style="display:inline-block;width:40px;height:40px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;line-height:40px;margin-right:10px;transition:all 0.3s;"><i class="bi bi-twitter"></i></a>
+                        <a href="#" style="display:inline-block;width:40px;height:40px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;line-height:40px;margin-right:10px;transition:all 0.3s;"><i class="bi bi-instagram"></i></a>
+                        <a href="#" style="display:inline-block;width:40px;height:40px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;line-height:40px;margin-right:10px;transition:all 0.3s;"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="mb-4">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" style="color:#dee2e6;text-decoration:none;">Home</a></li>
+                        <li class="mb-2"><a href="properties.html" style="color:#dee2e6;text-decoration:none;">Properties</a></li>
+                        <li class="mb-2"><a href="book-inspection.html" style="color:#dee2e6;text-decoration:none;">Book Inspection</a></li>
+                        <li class="mb-2"><a href="contact.html" style="color:#dee2e6;text-decoration:none;">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="mb-4">Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="bi bi-geo-alt me-2"></i>
+                            123 Victoria Island, Lagos
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-telephone me-2"></i>
+                            <a href="tel:+2348123456789" style="color:#dee2e6;text-decoration:none;">+234 812 345 6789</a>
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-envelope me-2"></i>
+                            <a href="mailto:bookings@primeproperties.com" style="color:#dee2e6;text-decoration:none;">bookings@primeproperties.com</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5 class="mb-4">Working Hours</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">Monday - Friday: 9AM - 6PM</li>
+                        <li class="mb-2">Saturday: 10AM - 4PM</li>
+                        <li class="mb-2">Sunday: Closed</li>
+                        <li class="mb-2">Inspections by appointment only</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="mt-5 mb-4" style="opacity: 0.1;">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">© 2023 PrimeProperties. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">Book your site inspection today!</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Flatpickr JS for date picker -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    
+    <!-- Booking Script -->
+    <script>
+        let currentStep = 1;
+        const bookingData = {
+            property: null,
+            date: null,
+            time: null,
+            name: '',
+            phone: '',
+            email: '',
+            peopleCount: '',
+            notes: ''
+        };
+        
+        // Time slots data
+        const timeSlots = [
+            '09:00 AM', '09:30 AM', '10:00 AM', '10:30 AM',
+            '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM',
+            '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM',
+            '04:00 PM', '04:30 PM'
+        ];
+        
+        // Initialize date picker
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Flatpickr
+            flatpickr("#inspectionDate", {
+                minDate: "today",
+                maxDate: new Date().fp_incr(30), // 30 days from now
+                dateFormat: "Y-m-d",
+                disable: [
+                    function(date) {
+                        // Disable Sundays
+                        return date.getDay() === 0;
+                    }
+                ],
+                onChange: function(selectedDates, dateStr, instance) {
+                    bookingData.date = dateStr;
+                    updateTimeSlots();
+                    updateSummary();
+                }
+            });
+            
+            // Property selection
+            document.querySelectorAll('.property-radio').forEach(radio => {
+                radio.addEventListener('change', function() {
+                    const propertyCard = this.closest('.property-select-card');
+                    document.querySelectorAll('.property-select-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    propertyCard.classList.add('selected');
+                    
+                    // Store property data
+                    const propertyName = propertyCard.querySelector('h5').textContent;
+                    bookingData.property = propertyName;
+                    updateSummary();
+                });
+            });
+            
+            // Initialize time slots
+            updateTimeSlots();
+            
+            // Form input listeners
+            document.getElementById('fullName').addEventListener('input', function() {
+                bookingData.name = this.value;
+                updateSummary();
+            });
+            
+            document.getElementById('phone').addEventListener('input', function() {
+                bookingData.phone = this.value;
+                updateSummary();
+            });
+            
+            document.getElementById('peopleCount').addEventListener('change', function() {
+                bookingData.peopleCount = this.value;
+                updateSummary();
+            });
+        });
+        
+        // Navigation functions
+        function nextStep() {
+            // Validate current step
+            if (!validateStep(currentStep)) {
+                return;
+            }
+            
+            // Hide current section
+            document.getElementById(`section${currentStep}`).classList.remove('active');
+            
+            // Update step indicator
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            document.getElementById(`step${currentStep}`).classList.add('completed');
+            
+            // Move to next step
+            currentStep++;
+            
+            // Show next section
+            document.getElementById(`section${currentStep}`).classList.add('active');
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            // Scroll to top of form
+            document.querySelector('.booking-form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function prevStep() {
+            // Hide current section
+            document.getElementById(`section${currentStep}`).classList.remove('active');
+            
+            // Update step indicator
+            document.getElementById(`step${currentStep}`).classList.remove('active');
+            document.getElementById(`step${currentStep-1}`).classList.remove('completed');
+            
+            // Move to previous step
+            currentStep--;
+            
+            // Show previous section
+            document.getElementById(`section${currentStep}`).classList.add('active');
+            document.getElementById(`step${currentStep}`).classList.add('active');
+            
+            // Scroll to top of form
+            document.querySelector('.booking-form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function validateStep(step) {
+            switch(step) {
+                case 1:
+                    if (!bookingData.property) {
+                        alert('Please select a property for inspection.');
+                        return false;
+                    }
+                    return true;
+                    
+                case 2:
+                    if (!bookingData.date || !bookingData.time) {
+                        alert('Please select both a date and time for your inspection.');
+                        return false;
+                    }
+                    return true;
+                    
+                case 3:
+                    const name = document.getElementById('fullName').value.trim();
+                    const phone = document.getElementById('phone').value.trim();
+                    const people = document.getElementById('peopleCount').value;
+                    
+                    if (!name) {
+                        alert('Please enter your full name.');
+                        document.getElementById('fullName').focus();
+                        return false;
+                    }
+                    
+                    if (!phone) {
+                        alert('Please enter your phone number.');
+                        document.getElementById('phone').focus();
+                        return false;
+                    }
+                    
+                    if (!people) {
+                        alert('Please select the number of people attending.');
+                        document.getElementById('peopleCount').focus();
+                        return false;
+                    }
+                    
+                    bookingData.name = name;
+                    bookingData.phone = phone;
+                    bookingData.email = document.getElementById('email').value.trim();
+                    bookingData.peopleCount = people;
+                    bookingData.notes = document.getElementById('additionalNotes').value.trim();
+                    
+                    updateSummary();
+                    return true;
+                    
+                default:
+                    return true;
+            }
+        }
+        
+        function updateTimeSlots() {
+            const container = document.getElementById('timeSlots');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            timeSlots.forEach(slot => {
+                const isDisabled = Math.random() > 0.7; // Randomly disable some slots for demo
+                const button = document.createElement('button');
+                button.type = 'button';
+                button.className = `time-slot ${isDisabled ? 'disabled' : ''} ${bookingData.time === slot ? 'selected' : ''}`;
+                button.textContent = slot;
+                button.disabled = isDisabled;
+                
+                if (!isDisabled) {
+                    button.addEventListener('click', function() {
+                        document.querySelectorAll('.time-slot').forEach(s => {
+                            s.classList.remove('selected');
+                        });
+                        this.classList.add('selected');
+                        bookingData.time = slot;
+                        updateSummary();
+                    });
+                }
+                
+                container.appendChild(button);
+            });
+        }
+        
+        function updateSummary() {
+            document.getElementById('summaryProperty').textContent = bookingData.property || '--';
+            document.getElementById('summaryDate').textContent = bookingData.date ? new Date(bookingData.date).toLocaleDateString('en-NG', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }) : '--';
+            document.getElementById('summaryTime').textContent = bookingData.time || '--';
+            document.getElementById('summaryName').textContent = bookingData.name || '--';
+            document.getElementById('summaryPhone').textContent = bookingData.phone || '--';
+            document.getElementById('summaryPeople').textContent = bookingData.peopleCount ? `${bookingData.peopleCount} person${bookingData.peopleCount > 1 ? 's' : ''}` : '--';
+        }
+        
+        function confirmBooking() {
+            // Validate all data
+            if (!bookingData.property || !bookingData.date || !bookingData.time || !bookingData.name || !bookingData.phone || !bookingData.peopleCount) {
+                alert('Please complete all required fields.');
+                return;
+            }
+            
+            // Format date for display
+            const formattedDate = new Date(bookingData.date).toLocaleDateString('en-NG', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Create WhatsApp message
+            const message = `🎯 *SITE INSPECTION BOOKING*\n\n` +
+                           `📋 *Booking Details:*\n` +
+                           `🏠 Property: ${bookingData.property}\n` +
+                           `📅 Date: ${formattedDate}\n` +
+                           `⏰ Time: ${bookingData.time}\n` +
+                           `👥 People: ${bookingData.peopleCount} person${bookingData.peopleCount > 1 ? 's' : ''}\n\n` +
+                           `👤 *Contact Information:*\n` +
+                           `Name: ${bookingData.name}\n` +
+                           `Phone: ${bookingData.phone}\n` +
+                           `${bookingData.email ? `Email: ${bookingData.email}\n` : ''}` +
+                           `${bookingData.notes ? `Notes: ${bookingData.notes}\n` : ''}\n` +
+                           `📍 Please confirm this booking.`;
+            
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Open WhatsApp
+            window.open(`https://wa.me/2348123456789?text=${encodedMessage}`, '_blank');
+            
+            // Show confirmation
+            alert('Thank you! Opening WhatsApp to confirm your booking. Our team will respond within 30 minutes.');
+        }
+        
+        function scrollToBooking() {
+            document.querySelector('.booking-form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

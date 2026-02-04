@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | PrimeProperties</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #198754;
+            --accent-color: #ffc107;
+            --dark-color: #212529;
+            --light-color: #f8f9fa;
+        }
+        
+        .contact-hero {
+            background: linear-gradient(rgba(13, 110, 253, 0.9), rgba(13, 110, 253, 0.95)), 
+                        url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            position: relative;
+        }
+        
+        .contact-info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+        
+        .contact-info-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(13, 110, 253, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .contact-icon i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .contact-form-container {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            margin-top: -50px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .form-control, .form-select {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        
+        .contact-map {
+            height: 400px;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 40px 0;
+        }
+        
+        .branch-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .branch-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .branch-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        
+        .branch-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .business-hours {
+            background: var(--light-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 40px 0;
+        }
+        
+        .hours-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .hours-table tr {
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .hours-table tr:last-child {
+            border-bottom: none;
+        }
+        
+        .hours-table td {
+            padding: 15px 0;
+        }
+        
+        .hours-table td:first-child {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .faq-section {
+            padding: 60px 0;
+            background: var(--light-color);
+        }
+        
+        .accordion-button {
+            padding: 20px;
+            font-weight: 600;
+            border: none;
+            background: white;
+            border-radius: 10px !important;
+            margin-bottom: 10px;
+        }
+        
+        .accordion-button:not(.collapsed) {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: none;
+        }
+        
+        .accordion-button:focus {
+            box-shadow: none;
+            border-color: transparent;
+        }
+        
+        .accordion-body {
+            padding: 20px;
+            background: white;
+            border-radius: 0 0 10px 10px;
+        }
+        
+        .contact-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .contact-method-btn {
+            flex: 1;
+            min-width: 200px;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            background: white;
+            text-align: center;
+            text-decoration: none;
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .contact-method-btn:hover {
+            border-color: var(--primary-color);
+            background: rgba(13, 110, 253, 0.05);
+            transform: translateY(-3px);
+        }
+        
+        .contact-method-btn i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .whatsapp-btn {
+            border-color: #25d366;
+            color: #25d366;
+        }
+        
+        .whatsapp-btn:hover {
+            background: rgba(37, 211, 102, 0.1);
+        }
+        
+        .success-message {
+            display: none;
+            background: rgba(25, 135, 84, 0.1);
+            border: 1px solid var(--secondary-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .contact-form-container {
+                margin-top: 0;
+                padding: 25px;
+            }
+            
+            .contact-hero {
+                padding: 70px 0;
+            }
+            
+            .contact-method-btn {
+                min-width: 100%;
+            }
+        }
+        
+        .required::after {
+            content: " *";
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/2348123456789?text=Hi,%20I%20want%20to%20inquire%20about%20your%20properties" class="whatsapp-float" target="_blank" style="position:fixed;width:60px;height:60px;bottom:20px;right:20px;background-color:#25d366;color:white;border-radius:50%;text-align:center;font-size:30px;box-shadow:2px 2px 10px rgba(0,0,0,0.2);z-index:1000;display:flex;align-items:center;justify-content:center;text-decoration:none;">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html" style="font-weight:700;font-size:1.8rem;color:var(--primary-color)!important;">
+                <i class="bi bi-house-heart-fill text-primary me-2"></i>
+                PrimeProperties
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="properties.html">Properties</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+                <div class="d-flex ms-lg-3 mt-3 mt-lg-0">
+                    <a href="tel:+2348123456789" class="btn btn-outline-primary me-2">
+                        <i class="bi bi-telephone"></i> Call Now
+                    </a>
+                    <a href="https://wa.me/2348123456789" class="btn btn-primary" target="_blank">
+                        <i class="bi bi-whatsapp"></i> WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="contact-hero">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-5 fw-bold mb-3">Get in Touch With Us</h1>
+                    <p class="lead mb-4">Have questions about our properties? Ready to make an investment? Our team is here to help you every step of the way.</p>
+                    <div class="d-flex flex-wrap justify-content-center gap-3">
+                        <a href="#contact-form" class="btn btn-light btn-lg px-4">
+                            <i class="bi bi-envelope me-2"></i> Send Message
+                        </a>
+                        <a href="tel:+2348123456789" class="btn btn-outline-light btn-lg px-4">
+                            <i class="bi bi-telephone me-2"></i> Call Now
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+                        <h4 class="mb-3">Phone Numbers</h4>
+                        <p class="mb-2">
+                            <strong>Sales:</strong>
+                            <a href="tel:+2348123456789" class="text-decoration-none d-block">+234 812 345 6789</a>
+                        </p>
+                        <p class="mb-2">
+                            <strong>Support:</strong>
+                            <a href="tel:+2348098765432" class="text-decoration-none d-block">+234 809 876 5432</a>
+                        </p>
+                        <p class="mb-0">
+                            <strong>WhatsApp:</strong>
+                            <a href="https://wa.me/2348123456789" class="text-decoration-none d-block" target="_blank">+234 812 345 6789</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+                        <h4 class="mb-3">Email Addresses</h4>
+                        <p class="mb-2">
+                            <strong>Sales Inquiries:</strong>
+                            <a href="mailto:sales@primeproperties.com" class="text-decoration-none d-block">sales@primeproperties.com</a>
+                        </p>
+                        <p class="mb-2">
+                            <strong>Support:</strong>
+                            <a href="mailto:support@primeproperties.com" class="text-decoration-none d-block">support@primeproperties.com</a>
+                        </p>
+                        <p class="mb-0">
+                            <strong>General:</strong>
+                            <a href="mailto:info@primeproperties.com" class="text-decoration-none d-block">info@primeproperties.com</a>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="contact-info-card">
+                        <div class="contact-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <h4 class="mb-3">Head Office</h4>
+                        <p class="mb-3">
+                            <i class="bi bi-building me-2"></i>
+                            123 Victoria Island,<br>
+                            Lagos State, Nigeria
+                        </p>
+                        <p class="mb-0">
+                            <i class="bi bi-clock me-2"></i>
+                            Mon - Fri: 9AM - 6PM<br>
+                            Sat: 10AM - 4PM
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section id="contact-form" class="pb-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="contact-form-container">
+                        <div class="row align-items-center mb-5">
+                            <div class="col-md-8">
+                                <h2 class="fw-bold mb-3">Send Us a Message</h2>
+                                <p class="text-muted">Fill out the form below and our team will get back to you within 24 hours.</p>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <div class="d-flex gap-2 justify-content-md-end">
+                                    <a href="https://wa.me/2348123456789" class="btn btn-success" target="_blank">
+                                        <i class="bi bi-whatsapp"></i> WhatsApp
+                                    </a>
+                                    <a href="tel:+2348123456789" class="btn btn-primary">
+                                        <i class="bi bi-telephone"></i> Call
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <form id="contactForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="fullName" class="form-label required">Full Name</label>
+                                    <input type="text" class="form-control" id="fullName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="phone" class="form-label required">Phone Number</label>
+                                    <input type="tel" class="form-control" id="phone" placeholder="e.g., 08123456789" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="email" class="form-label required">Email Address</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="subject" class="form-label required">Subject</label>
+                                    <select class="form-select" id="subject" required>
+                                        <option value="">Select a subject</option>
+                                        <option value="property-inquiry">Property Inquiry</option>
+                                        <option value="site-inspection">Book Site Inspection</option>
+                                        <option value="payment-plan">Payment Plan Information</option>
+                                        <option value="documentation">Documentation Help</option>
+                                        <option value="general">General Inquiry</option>
+                                        <option value="complaint">Complaint</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="message" class="form-label required">Message</label>
+                                    <textarea class="form-control" id="message" rows="5" required placeholder="Tell us how we can help you..."></textarea>
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="newsletter">
+                                        <label class="form-check-label" for="newsletter">
+                                            Subscribe to our newsletter for property updates and investment tips
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                                        <i class="bi bi-send me-2"></i> Send Message
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                        <!-- Success Message -->
+                        <div class="success-message" id="successMessage">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-check-circle-fill text-success me-3" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <h5 class="mb-1">Message Sent Successfully!</h5>
+                                    <p class="mb-0">Thank you for contacting us. We'll get back to you within 24 hours.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Map -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="fw-bold text-center mb-5">Find Our Office</h2>
+            <div class="contact-map" id="map">
+                <!-- Embedded Google Map -->
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3964.622002577815!2d3.4691230740081406!3d6.447488493543595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103bf4f8a8c1a6e1%3A0xc2c7e5a1d6a5b5b5!2sVictoria%20Island%2C%20Lagos!5e0!3m2!1sen!2sng!4v1681234567890!5m2!1sen!2sng" 
+                    width="100%" 
+                    height="400" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Business Hours -->
+    <section class="py-5">
+        <div class="container">
+            <div class="business-hours">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <h3 class="fw-bold mb-4">Business Hours</h3>
+                        <table class="hours-table">
+                            <tr>
+                                <td>Monday - Friday</td>
+                                <td>9:00 AM - 6:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Saturday</td>
+                                <td>10:00 AM - 4:00 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Sunday</td>
+                                <td>Closed</td>
+                            </tr>
+                            <tr>
+                                <td>Public Holidays</td>
+                                <td>Closed</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="mt-4 mt-lg-0">
+                            <h5 class="mb-3">Emergency Contact</h5>
+                            <p class="text-muted mb-3">For urgent property matters outside business hours:</p>
+                            <a href="tel:+2348123456789" class="btn btn-outline-primary">
+                                <i class="bi bi-telephone me-2"></i> +234 812 345 6789
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Branch Offices -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="fw-bold text-center mb-5">Our Branch Offices</h2>
+            <div class="branch-cards">
+                <div class="branch-card">
+                    <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                         alt="Lagos Office" 
+                         class="branch-img">
+                    <h5 class="mb-2">Lagos Head Office</h5>
+                    <p class="text-muted small mb-3">
+                        <i class="bi bi-geo-alt me-1"></i>
+                        123 Victoria Island, Lagos State
+                    </p>
+                    <p class="mb-0 small">Our flagship office with full sales, legal, and support teams available.</p>
+                </div>
+                
+                <div class="branch-card">
+                    <img src="https://images.unsplash.com/photo-1592921870789-04563d55041c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                         alt="Abuja Office" 
+                         class="branch-img">
+                    <h5 class="mb-2">Abuja Office</h5>
+                    <p class="text-muted small mb-3">
+                        <i class="bi bi-geo-alt me-1"></i>
+                        45 Central Business District, Abuja
+                    </p>
+                    <p class="mb-0 small">Serving clients in the Federal Capital Territory and surrounding states.</p>
+                </div>
+                
+                <div class="branch-card">
+                    <img src="https://images.unsplash.com/photo-1548013146-72479768bada?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" 
+                         alt="Ibadan Office" 
+                         class="branch-img">
+                    <h5 class="mb-2">Ibadan Office</h5>
+                    <p class="text-muted small mb-3">
+                        <i class="bi bi-geo-alt me-1"></i>
+                        78 Bodija Estate, Ibadan, Oyo State
+                    </p>
+                    <p class="mb-0 small">Our South-West regional office for properties in Oyo, Osun, and Ogun states.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="fw-bold text-center mb-5">Frequently Asked Questions</h2>
+            
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item mb-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            How quickly will you respond to my inquiry?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            We aim to respond to all inquiries within 24 hours during business days. For WhatsApp messages, we typically respond within 1-2 hours during business hours (9AM - 6PM Monday-Friday).
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item mb-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            What documents do I need to purchase a property?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            You'll need a valid means of identification (National ID, Driver's License, International Passport, or Voter's Card). We handle all property documentation including C of O registration and Governor's consent. Our legal team will guide you through the complete process.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item mb-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            Can I pay in installments?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes! We offer flexible payment plans ranging from 6 to 24 months. The down payment starts from 10% of the property value. Contact our sales team to discuss the best payment plan for your budget.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item mb-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            Are all your properties verified?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Absolutely! Every property we sell comes with verified and registered titles. We conduct thorough due diligence including land verification, government approval checks, and document authentication before listing any property.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            Do you offer after-sales support?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, we provide comprehensive after-sales support. This includes assistance with documentation processing, connection to utility services, and ongoing property management services if required. Our support team is available to help you even after you've taken possession of your property.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alternative Contact Methods -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="fw-bold text-center mb-5">Other Ways to Reach Us</h2>
+            <div class="contact-methods">
+                <a href="https://wa.me/2348123456789" class="contact-method-btn whatsapp-btn" target="_blank">
+                    <i class="bi bi-whatsapp"></i>
+                    <div>
+                        <strong>WhatsApp Chat</strong>
+                        <div class="small text-muted">Fast response within hours</div>
+                    </div>
+                </a>
+                
+                <a href="tel:+2348123456789" class="contact-method-btn">
+                    <i class="bi bi-telephone"></i>
+                    <div>
+                        <strong>Phone Call</strong>
+                        <div class="small text-muted">Speak directly with our agents</div>
+                    </div>
+                </a>
+                
+                <a href="mailto:sales@primeproperties.com" class="contact-method-btn">
+                    <i class="bi bi-envelope"></i>
+                    <div>
+                        <strong>Email</strong>
+                        <div class="small text-muted">Detailed inquiries & documents</div>
+                    </div>
+                </a>
+                
+                <a href="book-inspection.html" class="contact-method-btn">
+                    <i class="bi bi-calendar-check"></i>
+                    <div>
+                        <strong>Book Inspection</strong>
+                        <div class="small text-muted">Visit properties in person</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer" style="background:var(--dark-color);color:white;padding:60px 0 30px;">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <h4 class="mb-4">
+                        <i class="bi bi-house-heart-fill text-primary me-2"></i>
+                        PrimeProperties
+                    </h4>
+                    <p class="mb-4">Your trusted partner for prime real estate investments in Nigeria.</p>
+                    <div class="social-icons">
+                        <a href="#" style="display:inline-block;width:40px;height:40px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;line-height:40px;margin-right:10px;transition:all 0.3s;"><i class="bi bi-facebook"></i></a>
+                        <a href="#" style="display:inline-block;width:40px;height:40px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;line-height:40px;margin-right:10px;transition:all 0.3s;"><i class="bi bi-twitter"></i></a>
+                        <a href="#" style="display:inline-block;width:40px;height:40px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;line-height:40px;margin-right:10px;transition:all 0.3s;"><i class="bi bi-instagram"></i></a>
+                        <a href="#" style="display:inline-block;width:40px;height:40px;background:rgba(255,255,255,0.1);border-radius:50%;text-align:center;line-height:40px;margin-right:10px;transition:all 0.3s;"><i class="bi bi-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="mb-4">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="index.html" style="color:#dee2e6;text-decoration:none;">Home</a></li>
+                        <li class="mb-2"><a href="properties.html" style="color:#dee2e6;text-decoration:none;">Properties</a></li>
+                        <li class="mb-2"><a href="about.html" style="color:#dee2e6;text-decoration:none;">About Us</a></li>
+                        <li class="mb-2"><a href="contact.html" style="color:#dee2e6;text-decoration:none;">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="mb-4">Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-3">
+                            <i class="bi bi-geo-alt me-2"></i>
+                            123 Victoria Island, Lagos
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-telephone me-2"></i>
+                            <a href="tel:+2348123456789" style="color:#dee2e6;text-decoration:none;">+234 812 345 6789</a>
+                        </li>
+                        <li class="mb-3">
+                            <i class="bi bi-envelope me-2"></i>
+                            <a href="mailto:info@primeproperties.com" style="color:#dee2e6;text-decoration:none;">info@primeproperties.com</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3">
+                    <h5 class="mb-4">Stay Updated</h5>
+                    <p class="small mb-3">Subscribe to our newsletter for property updates</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Your email">
+                        <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-5 mb-4" style="opacity: 0.1;">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">© 2023 PrimeProperties. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">We're here to help you find your dream property</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Contact Form Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const contactForm = document.getElementById('contactForm');
+            const successMessage = document.getElementById('successMessage');
+            
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Basic validation
+                const name = document.getElementById('fullName').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const subject = document.getElementById('subject').value;
+                const message = document.getElementById('message').value.trim();
+                
+                if (!name || !phone || !email || !subject || !message) {
+                    alert('Please fill in all required fields.');
+                    return;
+                }
+                
+                // Nigerian phone number validation (basic)
+                const phoneRegex = /^(0[7-9][0-1]\d{8})$/;
+                if (!phoneRegex.test(phone)) {
+                    alert('Please enter a valid Nigerian phone number (e.g., 08123456789)');
+                    document.getElementById('phone').focus();
+                    return;
+                }
+                
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    alert('Please enter a valid email address.');
+                    document.getElementById('email').focus();
+                    return;
+                }
+                
+                // In a real application, you would send the form data to a server here
+                // For this demo, we'll just show the success message
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                
+                // Reset form
+                contactForm.reset();
+                
+                // Scroll to success message
+                successMessage.scrollIntoView({ behavior: 'smooth' });
+                
+                // Hide success message after 10 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 10000);
+                
+                // Log the form data (for demo purposes)
+                console.log('Form submitted:', {
+                    name,
+                    phone,
+                    email,
+                    subject,
+                    message,
+                    newsletter: document.getElementById('newsletter').checked
+                });
+            });
+            
+            // Auto-format phone number
+            document.getElementById('phone').addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.startsWith('234')) {
+                    value = '0' + value.substring(3);
+                }
+                e.target.value = value;
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
